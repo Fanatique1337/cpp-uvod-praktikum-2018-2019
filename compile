@@ -1,0 +1,4 @@
+#!/bin/bash
+
+OUTPUT_FILE="$(echo $1 | cut -d '.' -f1)"
+g++ -std=c++11 $1 -o "$OUTPUT_FILE.o"
