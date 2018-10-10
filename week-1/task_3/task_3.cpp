@@ -17,6 +17,10 @@ int main()
 	std::cout << "Enter Y coordinate: " << std::endl;
 	std::cin >> y;
 
+	/*
+	При дадена координата X, ако уравнението за Y е вярно,
+	то тогава точка с координати X & Y лежи на правата.
+	*/
 	if ((x*2 + 5) == y)
 		std::cout << "true" << std::endl;
 	else

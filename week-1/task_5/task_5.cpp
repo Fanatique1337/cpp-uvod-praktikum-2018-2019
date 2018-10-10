@@ -12,6 +12,7 @@ int main()
 	std::cout << "Enter a number: " << std::endl;
 	std::cin >> number;
 
+	// Алгоритъма за обръщане от task_4.
 	while (number != 0)
 	{
 		digit = number % 10;
