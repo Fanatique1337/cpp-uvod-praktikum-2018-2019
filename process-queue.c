@@ -41,14 +41,12 @@ int assign_pid()
     return (rand() % (PID_MAX + 1));
 }
 
-struct process generate_process()
+struct process generate_process(int len)
 {
     struct process proc;
 
-    printf("Enter the timelength for the process: ");
-    scanf("%d", &proc.length);
-
     proc.pid = assign_pid();
+    proc.length = len;
 
     return proc;
 }
@@ -59,6 +57,48 @@ void print_info()
     printf("Queue for processor 2: %d process(es), Total time: %d\n", q2_process_count, q2_total_time);
     printf("Queue for processor 3: %d process(es), Total time: %d\n", q3_process_count, q3_total_time);
     printf("Queue for processor 4: %d process(es), Total time: %d\n", q4_process_count, q4_total_time);
+}
+
+int get_lowest_queue()
+{
+    int total_times[4] = {q1_total_time, q2_total_time, q3_total_time, q4_total_time};
+
+    int min = q1_total_time;
+
+
+    for(int counter = 0; counter < 4; counter++)
+    {
+        if(total_times[counter] < min)
+            min = total_times[counter];
+    }
+
+    for(int counter = 0; counter < 4; counter++)
+    {
+        if(total_times[counter] == min)
+            return counter + 1;
+    }
+}
+
+void insert_process(struct process proc, int q)
+{
+    switch(q) {
+        case 1: {
+            // resize_queue(q, 2);
+            queue_1[q1_process_count-1] = proc;
+        }
+        case 2: {
+            // resize_queue(q, 2);
+            queue_2[q2_process_count-1] = proc;
+        }
+        case 3: {
+            // resize_queue(q, 2);
+            queue_3[q3_process_count-1] = proc;
+        }
+        case 4: {
+            // resize_queue(q, 2);
+            queue_4[q4_process_count-1] = proc;
+        }
+    }
 }
 
 void interface()
@@ -72,6 +112,32 @@ void interface()
         printf("Enter process %d time: ", counter);
         scanf("%s", input);
         sscanf(input, "%d", &ptime);
+        int lowest = get_lowest_queue();
+        switch(lowest) {
+            case 1: {
+                q1_total_time += ptime;
+                q1_process_count++;
+                break;
+            }
+            case 2: {
+                q2_total_time += ptime;
+                q2_process_count++;
+                break;
+            }
+            case 3: {
+                q3_total_time += ptime;
+                q3_process_count++;
+                break;
+            }
+            case 4: {
+                q4_total_time += ptime;
+                q4_process_count++;
+                break;
+            }
+        }
+
+        insert_process(generate_process(ptime), lowest);
+
         if(counter % 5 == 0)
             print_info();
     }
@@ -84,10 +150,10 @@ int main()
 {
     srand(time(0));
 
-    queue_1 = malloc(2 * sizeof(int));
-    queue_2 = malloc(2 * sizeof(int));
-    queue_3 = malloc(2 * sizeof(int));
-    queue_4 = malloc(2 * sizeof(int));
+    queue_1 = malloc(60 * sizeof(int));
+    queue_2 = malloc(60 * sizeof(int));
+    queue_3 = malloc(60 * sizeof(int));
+    queue_4 = malloc(60 * sizeof(int));
 
     interface();
 
